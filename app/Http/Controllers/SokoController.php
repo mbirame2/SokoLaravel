@@ -104,23 +104,26 @@ if ($validator->fails()) {
       $com->adresse=$req->input('adresse');
       $com->mode_paiment=$req->input('modpai');
       $com->statut_commande='en cours';
-      $com->save();
-
-      $achat= new achat();
+    //  $com->save();
+    $com->save();
+      
     //  echo $req->product;
-     // foreach ($req->product as $flight) {
-    
-       
+      foreach ($req->product as $flight) {
+        $achat = new achat();
+     //  var_dump($flight);die();
         $achat->user()->associate(auth('api')->user());
-        $article=new Article();
-        $article=$req->product[0];
-var_dump($article);die();
+       $article = Article::where('id',$flight)->first();
+
+
         $achat->article()->associate($article);
         $achat->commande()->associate($com);
+   //     achat::create($achat);
         $achat->save();
-   //    }
-      return response()->json($req->product); 
-    }
+       
+       }
+      return response()->json($req); 
+    
+  }
     public function allachat()
     {
       $article = achat::with(['article', 'user','commande'])->where('user_id', auth('api')->user()->id)->get();
