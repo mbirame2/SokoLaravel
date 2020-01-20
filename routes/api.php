@@ -16,23 +16,23 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
-Route::post('login', 'API\UserController@login');
-Route::post('register', 'API\UserController@register');
+Route::post('login',array('middleware' => 'cors', 'uses' => 'API\UserController@login'));
+Route::post('register', array('middleware' => 'cors', 'uses' =>'API\UserController@register'));
 Route::group(['middleware' => 'auth:api'], function(){ 
 Route::post('details', 'API\UserController@details');
 });
-Route::post('ventearticle','SokoController@ventearticle');
-Route::post('commande','SokoController@commande');
+Route::post('ventearticle',array('middleware' => 'cors', 'uses' =>'SokoController@ventearticle'));
+Route::post('commande',array('middleware' => 'cors', 'uses' =>'SokoController@commande'));
 
-Route::get('onevente/{id}','SokoController@onevente');
-Route::get('allhomme','SokoController@allhomme');
-Route::get('allfemme','SokoController@allfemme');
-Route::get('allcat','SokoController@allcat');
-Route::get('allsscat','SokoController@allsscat');
+Route::get('onevente/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@onevente'));
+Route::get('allhomme',array('middleware' => 'cors', 'uses' =>'SokoController@allhomme'));
+Route::get('allfemme',array('middleware' => 'cors', 'uses' =>'SokoController@allfemme'));
+Route::get('allcat',array('middleware' => 'cors', 'uses' =>'SokoController@allcat'));
+Route::get('allsscat',array('middleware' => 'cors', 'uses' =>'SokoController@allsscat'));
 
-Route::get('allachat','SokoController@allachat');
-Route::get('allnew','SokoController@allnew');
-Route::get('allvente','SokoController@allvente');
-Route::get('getuser','SokoController@getUser');
-Route::get('categorie/{name}','SokoController@triagecategorie');
-Route::get('sscategorie/{name}','SokoController@triagesscategorie');
+Route::get('allachat',array('middleware' => 'cors', 'uses' =>'SokoController@allachat'));
+Route::get('allnew',array('middleware' => 'cors', 'uses' => 'SokoController@allnew'));
+Route::get('allvente',array('middleware' => 'cors', 'uses' =>'SokoController@allvente'));
+Route::get('getuser',array('middleware' => 'cors', 'uses' =>'SokoController@getUser'));
+Route::get('categorie/{name}',array('middleware' => 'cors', 'uses' =>'SokoController@triagecategorie'));
+Route::get('sscategorie/{name}',array('middleware' => 'cors', 'uses' =>'SokoController@triagesscategorie'));
