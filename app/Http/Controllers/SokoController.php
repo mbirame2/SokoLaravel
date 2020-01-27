@@ -41,7 +41,7 @@ if ($validator->fails()) {
         $article->Couleur=$req->input('couleur');
         $article->Genre=$req->input('genre');
         $article->Condition=$req->input('condition');
-          $article->Confid=$req->input('confid');
+      
 
         $article->Disponible="oui";
         $image = base64_encode(file_get_contents($req->file('imagename')));
