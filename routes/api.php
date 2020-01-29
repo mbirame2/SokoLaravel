@@ -25,6 +25,8 @@ Route::post('ventearticle',array('middleware' => 'cors', 'uses' =>'SokoControlle
 Route::post('commande',array('middleware' => 'cors', 'uses' =>'SokoController@commande'));
 
 Route::get('onevente/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@onevente'));
+Route::get('remove/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@remove'));
+
 Route::get('allhomme',array('middleware' => 'cors', 'uses' =>'SokoController@allhomme'));
 Route::get('allfemme',array('middleware' => 'cors', 'uses' =>'SokoController@allfemme'));
 Route::get('allcat',array('middleware' => 'cors', 'uses' =>'SokoController@allcat'));

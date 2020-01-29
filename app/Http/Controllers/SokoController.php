@@ -104,13 +104,10 @@ if ($validator->fails()) {
       $com->adresse=$req->input('adresse');
       $com->mode_paiment=$req->input('modpai');
       $com->statut_commande='en cours';
-    //  $com->save();
     $com->save();
       
-    //  echo $req->product;
       foreach ($req->product as $flight) {
         $achat = new achat();
-     //  var_dump($flight);die();
         $achat->user()->associate(auth('api')->user());
        $article = Article::where('id',$flight)->first();
 $article->Disponible="non";
@@ -118,7 +115,6 @@ $article->save();
 
         $achat->article()->associate($article);
         $achat->commande()->associate($com);
-   //     achat::create($achat);
         $achat->save();
        
        }
@@ -143,6 +139,14 @@ $article->save();
       $article = vente::with(['user'])->where('article_id',$id)->first();
       return response($article, 200)  ;
                 }
+
+    public function remove($id){
+      triagearticles::where('article_id',$id)->delete();  
+     
+       vente::where('article_id',$id)->delete();
+       Article::where('id',$id)->delete();
+      return response("Supprimer avec succés", 200)  ;
+    }
     public function allvente()
     {
       $article = vente::with(['article', 'user'])->where('user_id', auth('api')->user()->id)->get();
