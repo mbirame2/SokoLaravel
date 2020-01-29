@@ -113,7 +113,8 @@ if ($validator->fails()) {
      //  var_dump($flight);die();
         $achat->user()->associate(auth('api')->user());
        $article = Article::where('id',$flight)->first();
-
+$article->Disponible="non";
+$article->save();
 
         $achat->article()->associate($article);
         $achat->commande()->associate($com);
