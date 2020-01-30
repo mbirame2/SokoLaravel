@@ -17,7 +17,7 @@ public $successStatus = 200;
     public function login(){ 
         if(Auth::attempt(['telephone' => request('telephone'), 'password' => request('password')])){ 
             $user = Auth::user(); 
-            $token =  $user->createToken('MyApp')-> accessToken; 
+            $token =  $user->createToken('MyApp')->accessToken; 
             return response()->json( $token); 
         } 
         else{ 
@@ -35,22 +35,21 @@ public $successStatus = 200;
             'prenom' => 'required', 
             'nom' => 'required', 
             'telephone' => 'required', 
-            'adresse' => 'required', 
             'password' => 'required', 
             'c_password' => 'required|same:password', 
         ]);
-if ($validator->fails()) { 
+        if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 401);            
         }
-$input = $request->all(); 
+
+        $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
-       // $roles = App\Role::first();
-    $input['role']="user";
+        $input['role']="user";
         $user = User::create($input); 
         
-        $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+        $success['token'] =  $user->createToken('MyApp')->accessToken; 
         $success['nom'] =  $user->nom;
-        return response()->json(['success'=>$success], $this-> successStatus); 
+        return response()->json(['success'=>$success], $this->successStatus); 
 
     }
 /** 
@@ -61,7 +60,7 @@ $input = $request->all();
     public function details() 
     { 
         $user = Auth::user(); 
-        return response()->json(['success' => $user], $this-> successStatus); 
+        return response()->json(['success' => $user], $this->successStatus); 
     } 
 }
  

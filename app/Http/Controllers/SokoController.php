@@ -158,6 +158,15 @@ $article->save();
   return response(auth('api')->user(), 200)
   ->header('Content-Type', 'application/json');
  }
+
+ public function update(Request $req){
+  $user = Auth::user();
+        
+  $user->update($req->all());
+  return response("succés", 200)
+  ->header('Content-Type', 'application/json');
+
+ }
  public function allhomme(){
   $article = triagearticles::with(['article', 'categorie','sscategorie'])->whereHas('article', function ($query) {
     $query->where('Genre', 'Homme');
