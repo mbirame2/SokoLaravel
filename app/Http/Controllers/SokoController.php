@@ -158,15 +158,39 @@ $article->save();
   return response(auth('api')->user(), 200)
   ->header('Content-Type', 'application/json');
  }
-
+/** 
+     * login api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
  public function update(Request $req){
-  $user = Auth::user();
-        
-  $user->update($req->all());
-  return response("succés", 200)
-  ->header('Content-Type', 'application/json');
+   
+  $user =User::find(auth('api')->user()->id);  
+  if ( $req->input('password')) {
+  if(Auth::attempt(['telephone' => auth('api')->user()->telephone, 'password' => $req->input('password')])){ 
 
- }
+
+      $user->password = bcrypt($req->input('cpassword'));
+  }else{
+    return response("unhotorisez", 401)
+    ->header('Content-Type', 'application/json');
+  }
+}
+
+if($req->input('prenom')){
+  $user->prenom = $req->input('prenom');}
+  if($req->input('nom')){
+  $user->nom = $req->input('nom');}
+  if($req->input('telephone')){
+  $user->telephone = $req->input('telephone');
+  }
+    $user->save();
+    return response("succés", 200)
+    ->header('Content-Type', 'application/json');
+  }
+
+
+ 
  public function allhomme(){
   $article = triagearticles::with(['article', 'categorie','sscategorie'])->whereHas('article', function ($query) {
     $query->where('Genre', 'Homme');
