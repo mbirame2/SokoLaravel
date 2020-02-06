@@ -41,13 +41,20 @@ if ($validator->fails()) {
         $article->Couleur=$req->input('couleur');
         $article->Genre=$req->input('genre');
         $article->Condition=$req->input('condition');
-      
-
         $article->Disponible="oui";
+        
         $image = base64_encode(file_get_contents($req->file('imagename')));
-          
+        $article->Imagename=$image;
+        if($req->hasFile('imagename1')){
+          $image1 = base64_encode(file_get_contents($req->file('imagename1')));
+          $article->Imagename1=$image1;
+        }
+        if($req->hasFile('imagename2')){
+          $image2 = base64_encode(file_get_contents($req->file('imagename2')));
+          $article->Imagename2=$image2;
 
-            $article->Imagename=$image;
+        }
+           
      
       
             $vente=new vente();
