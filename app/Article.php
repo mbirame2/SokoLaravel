@@ -14,7 +14,7 @@ class Article extends Model
  
   
     protected $fillable = [
-        'Taille', 'Titre', 'Prix','Description','Couleur','Condition','Disponible','Imagename','Imagename1','Imagename2','Genre'
+        'Taille', 'Titre', 'Prix','Description','Couleur','Condition','Disponible','Imagename','Imagename1','Imagename2','Genre','Imagename3'
     ];
 
 }

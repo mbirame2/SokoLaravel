@@ -54,7 +54,11 @@ if ($validator->fails()) {
           $article->Imagename2=$image2;
 
         }
-           
+        if($req->hasFile('imagename3')){
+          $image3 = base64_encode(file_get_contents($req->file('imagename3')));
+          $article->Imagename3=$image3;
+
+        } 
      
       
             $vente=new vente();
@@ -191,6 +195,9 @@ if($req->input('prenom')){
   if($req->input('telephone')){
   $user->telephone = $req->input('telephone');
   }
+  if($req->input('adresse')){
+    $user->adresse = $req->input('adresse');
+    }
     $user->save();
     return response("succés", 200)
     ->header('Content-Type', 'application/json');
