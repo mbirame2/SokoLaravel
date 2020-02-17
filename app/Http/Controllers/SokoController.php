@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\achat;
 use App\vente;
 use Validator;
@@ -111,25 +110,50 @@ if ($validator->fails()) {
   
 
     public function commande (Request $req){
-      $com=new commande();
-      $com->adresse=$req->input('adresse');
-      $com->mode_paiment=$req->input('modpai');
-      $com->statut_commande='en cours';
-    $com->save();
+      $invoice = new \Paydunya\Checkout\CheckoutInvoice();
+
+      \Paydunya\Setup::setMasterKey("pApwUxLn-U8Kh-doFk-mWbL-HlBbJKfV1VUC");
+      \Paydunya\Setup::setPublicKey("test_public_btfkB3P424IgQZrSraELQjci41k");
+      \Paydunya\Setup::setPrivateKey("test_private_FMgAMFjgGAnFfyrPCm5j70oliOM");
+      \Paydunya\Setup::setToken("CBFVDXcYTo7TMHUiDsiY");
+      \Paydunya\Setup::setMode("test");
+
+      \Paydunya\Checkout\Store::setName("SOKO Dakar"); // Seul le nom est requis
+      \Paydunya\Checkout\Store::setPhoneNumber("786087832");
+      \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com");
+
+  
+
+      //$com=new commande();
+     // $com->adresse=$req->input('adresse');
+   //   $com->mode_paiment=$req->input('modpai');
+      //$com->statut_commande='en cours';
+    //$com->save();
       
       foreach ($req->product as $flight) {
         $achat = new achat();
         $achat->user()->associate(auth('api')->user());
        $article = Article::where('id',$flight)->first();
-$article->Disponible="non";
-$article->save();
+        $article->Disponible="non";
+     //   $article->save();
 
-        $achat->article()->associate($article);
-        $achat->commande()->associate($com);
-        $achat->save();
+    //    $achat->article()->associate($article);
+      //  $achat->commande()->associate($com);
+        //$achat->save();
        
-       }
-      return response()->json($req); 
+       
+       $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);
+      }
+      $invoice->addTax("TVA (15%)", $article->Prix*15/100);
+$invoice->addTax("Livraison", 1000);
+      $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
+echo $invoice->getInvoiceUrl();
+       if($invoice->create()) {
+         header("Location: ".$invoice->getInvoiceUrl());
+     }else{
+         echo $invoice->response_text;
+     }
+     // return response()->json($req); 
     
   }
     public function allachat()
