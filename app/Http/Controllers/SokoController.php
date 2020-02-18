@@ -27,7 +27,7 @@ class SokoController extends Controller
         'couleur' => 'required', 
         'condition' => 'required', 
         'confid' => 'required', 
-    ]);
+    ]); 
 if ($validator->fails()) { 
         return response()->json(['error'=>$validator->errors()], 401);            
     }else{
@@ -122,7 +122,8 @@ if ($validator->fails()) {
       \Paydunya\Checkout\Store::setPhoneNumber("786087832");
       \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com");
 
-  
+      \Paydunya\Checkout\Store::setCallbackUrl("api.sokodakar.com/api/pay");
+
 
       //$com=new commande();
      // $com->adresse=$req->input('adresse');
@@ -146,7 +147,7 @@ if ($validator->fails()) {
       }
       $invoice->addTax("TVA (15%)", $article->Prix*15/100);
 $invoice->addTax("Livraison", 1000);
-      $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
+     // $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
 echo $invoice->getInvoiceUrl();
        if($invoice->create()) {
          header("Location: ".$invoice->getInvoiceUrl());
@@ -154,6 +155,20 @@ echo $invoice->getInvoiceUrl();
          echo $invoice->response_text;
      }
      // return response()->json($req); 
+    
+  }
+  public function api(){
+  
+      //Prenez votre MasterKey, hashez la et comparez le résultat au hash reçu par IPN
+      if($_POST['data']['hash'] === hash('sha512', "VOTRE_CLE_PRINCIPALE")) {
+    
+        if ($_POST['data']['status'] == "completed") {
+           echo $_POST['data'];
+        }
+    
+        } else {
+              die("Cette requête n'a pas été émise par PayDunya");
+        }
     
   }
     public function allachat()
