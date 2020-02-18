@@ -11,7 +11,9 @@ use App\categorie;
 use App\commande;
 use App\sscategorie;
 use App\triagearticles;
-use \Paydunya\Checkout\CheckoutInvoice;
+use Facade\FlareClient\Http\Response;
+use Paydunya\Checkout\CheckoutInvoice;
+
 use Illuminate\Support\Facades\Auth; 
 
 class SokoController extends Controller
@@ -123,8 +125,9 @@ if ($validator->fails()) {
       \Paydunya\Checkout\Store::setPhoneNumber("786087832");
       \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com");
 
-      \Paydunya\Checkout\Store::setCallbackUrl("api.sokodakar.com/api/pay");
-
+      \Paydunya\Checkout\Store::setCallbackUrl("http://127.0.0.1:8000/api/pay");
+      \Paydunya\Checkout\Store::setCancelUrl("http://magasin-le-choco.com/cancel_url.php");
+      \Paydunya\Checkout\Store::setReturnUrl("http://magasin-le-choco.com/return_url.php");
 
       //$com=new commande();
      // $com->adresse=$req->input('adresse');
@@ -148,68 +151,18 @@ if ($validator->fails()) {
       }
       $invoice->addTax("TVA (15%)", $article->Prix*15/100);
 $invoice->addTax("Livraison", 1000);
-     // $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
-echo $invoice->getInvoiceUrl();
+     $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
+//
        if($invoice->create()) {
          header("Location: ".$invoice->getInvoiceUrl());
+         return response($invoice->getInvoiceUrl(), 200)
+         ->header('Content-Type', 'application/json');
      }else{
          echo $invoice->response_text;
      }
-     // return response()->json($req); 
-    
-  }
-  public function pay(){
-  
-      //Prenez votre MasterKey, hashez la et comparez le résultat au hash reçu par IPN
-      if($_POST['data']['hash'] === hash('sha512', "VOTRE_CLE_PRINCIPALE")) {
-    
-        if ($_POST['data']['status'] == "completed") {
-          $token = $_GET['token'];
-          $_POST['data'];
-          $invoice = new \Paydunya\Checkout\CheckoutInvoice();
-          if ($invoice->confirm($token)) {
-          
-          // Récupérer le statut du paiement
-          // Le statut du paiement peut être soit completed, pending, cancelled
-          echo $invoice->getStatus();
-          
-          // Vous pouvez récupérer le nom, l'adresse email et le
-          // numéro de téléphone du client en utilisant
-          // les méthodes suivantes
-          echo $invoice->getCustomerInfo('name');
-          echo $invoice->getCustomerInfo('email');
-          echo $invoice->getCustomerInfo('phone');
-          
-          // Les méthodes qui suivent seront disponibles si et
-          // seulement si le statut du paiement est égal à "completed".
-          
-          // Récupérer l'URL du reçu PDF électronique pour téléchargement
-          echo $invoice->getReceiptUrl();
-          
-          // Récupérer n'importe laquelle des données personnalisées que
-          // vous avez eu à rajouter précédemment à la facture.
-          // Merci de vous assurer à utiliser les mêmes clés que celles utilisées
-          // lors de la configuration.
-          echo $invoice->getCustomData("categorie");
-          echo $invoice->getCustomData("periode");
-          echo $invoice->getCustomData("numero_gagnant");
-          echo $invoice->getCustomData("prix");
-          
-          // Vous pouvez aussi récupérer le montant total spécifié précédemment
-          echo $invoice->getTotalAmount();
-          
-          }else{
-          echo $invoice->getStatus();
-          echo $invoice->response_text;
-          echo $invoice->response_code;
-          }
-        }
-    
-        } else {
-              die("Cette requête n'a pas été émise par PayDunya");
-        }
-    
-  }
+   //  var_dump($invoice);
+}
+
     public function allachat()
     {
       $article = achat::with(['article', 'user','commande'])->where('user_id', auth('api')->user()->id)->get();
