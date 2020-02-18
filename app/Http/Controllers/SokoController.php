@@ -11,6 +11,7 @@ use App\categorie;
 use App\commande;
 use App\sscategorie;
 use App\triagearticles;
+use \Paydunya\Checkout\CheckoutInvoice;
 use Illuminate\Support\Facades\Auth; 
 
 class SokoController extends Controller
@@ -110,7 +111,7 @@ if ($validator->fails()) {
   
 
     public function commande (Request $req){
-      $invoice = new \Paydunya\Checkout\CheckoutInvoice();
+      $invoice = new CheckoutInvoice();
 
       \Paydunya\Setup::setMasterKey("pApwUxLn-U8Kh-doFk-mWbL-HlBbJKfV1VUC");
       \Paydunya\Setup::setPublicKey("test_public_btfkB3P424IgQZrSraELQjci41k");
