@@ -119,15 +119,15 @@ if ($validator->fails()) {
       \Paydunya\Setup::setPublicKey("test_public_btfkB3P424IgQZrSraELQjci41k");
       \Paydunya\Setup::setPrivateKey("test_private_FMgAMFjgGAnFfyrPCm5j70oliOM");
       \Paydunya\Setup::setToken("CBFVDXcYTo7TMHUiDsiY");
-      \Paydunya\Setup::setMode("test");
+     // \Paydunya\Setup::setMode("test");
 
       \Paydunya\Checkout\Store::setName("SOKO Dakar"); // Seul le nom est requis
       \Paydunya\Checkout\Store::setPhoneNumber("786087832");
       \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com");
 
-      \Paydunya\Checkout\Store::setCallbackUrl("http://127.0.0.1:8000/api/pay");
-      \Paydunya\Checkout\Store::setCancelUrl("http://magasin-le-choco.com/cancel_url.php");
-      \Paydunya\Checkout\Store::setReturnUrl("http://magasin-le-choco.com/return_url.php");
+      \Paydunya\Checkout\Store::setCallbackUrl("http://www.sokodakar.com/success");
+      \Paydunya\Checkout\Store::setCancelUrl("https://www.sokodakar.com/finaliser_commande");
+      \Paydunya\Checkout\Store::setReturnUrl("https://www.sokodakar.com/success");
 
       //$com=new commande();
      // $com->adresse=$req->input('adresse');
@@ -149,19 +149,32 @@ if ($validator->fails()) {
        
        $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);
       }
-      $invoice->addTax("TVA (15%)", $article->Prix*15/100);
-$invoice->addTax("Livraison", 1000);
-     $invoice->setTotalAmount($req->total+$article->Prix*15/100+1000);
-//
-       if($invoice->create()) {
-         header("Location: ".$invoice->getInvoiceUrl());
+$invoice->addTax("Livraison", 1500);
+     $invoice->setTotalAmount($req->total+1500);
+     $invoice->addChannels(['wari', 'jonijoni-senegal', 'orange-money-senegal']);
+     if($invoice->create()) {
+     //       console.log($invoice->response_text);
+  
+   
          return response($invoice->getInvoiceUrl(), 200)
          ->header('Content-Type', 'application/json');
      }else{
          echo $invoice->response_text;
      }
-   //  var_dump($invoice);
 }
+public function pay(){
+  $invoice = new CheckoutInvoice();
+  if($_POST['data']['hash'] === hash('sha512', "VOTRE_CLE_PRINCIPALE")) {
+
+    if ($_POST['data']['status'] == "completed") {
+        //Faites vos traitements backoffice ici...
+    }
+
+    } else {
+          die("Cette requête n'a pas été émise par PayDunya");
+    }
+  }
+
 
     public function allachat()
     {
