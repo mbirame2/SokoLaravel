@@ -11,9 +11,9 @@ use App\categorie;
 use App\commande;
 use App\sscategorie;
 use App\triagearticles;
+use File;
 use Facade\FlareClient\Http\Response;
 use Paydunya\Checkout\CheckoutInvoice;
-
 use Illuminate\Support\Facades\Auth; 
 
 class SokoController extends Controller
@@ -32,9 +32,12 @@ class SokoController extends Controller
         'confid' => 'required', 
     ]); 
 if ($validator->fails()) { 
+
         return response()->json(['error'=>$validator->errors()], 401);            
     }else{
+     // var_dump($req->all());die();
       if($req->hasFile('imagename')){
+     //  
         $article= new Article;
         $article->Taille=$req->input('taille');
         $article->Titre=$req->input('titre');
@@ -44,28 +47,28 @@ if ($validator->fails()) {
         $article->Genre=$req->input('genre');
         $article->Condition=$req->input('condition');
         $article->Disponible="oui";
-        
-        $image = base64_encode(file_get_contents($req->file('imagename')));
-        $article->Imagename=$image;
-        if($req->hasFile('imagename1')){
-          $image1 = base64_encode(file_get_contents($req->file('imagename1')));
-          $article->Imagename1=$image1;
+        $vente=new vente();
+        $vente->user()->associate(auth('api')->user());
+
+
+
+         $req->file('imagename')->move(public_path('images'),$req->file('imagename')->getClientOriginalName());
+        $article->Imagename=$req->file('imagename')->getClientOriginalName();
+
+
+        if($req->hasFile('imagename1') ){
+          $req->file('imagename1')->move(public_path('images'),$req->file('imagename1')->getClientOriginalName());
+        $article->Imagename1=$req->file('imagename1')->getClientOriginalName();
         }
         if($req->hasFile('imagename2')){
-          $image2 = base64_encode(file_get_contents($req->file('imagename2')));
-          $article->Imagename2=$image2;
-
+          $req->file('imagename2')->move(public_path('images'),$req->file('imagename2')->getClientOriginalName());
+          $article->Imagename2=$req->file('imagename2')->getClientOriginalName();
         }
         if($req->hasFile('imagename3')){
-          $image3 = base64_encode(file_get_contents($req->file('imagename3')));
-          $article->Imagename3=$image3;
-
-        } 
-     
+          $req->file('imagename3')->move(public_path('images'),$req->file('imagename3')->getClientOriginalName());
+          $article->Imagename3=$req->file('imagename3')->getClientOriginalName();  
+        }
       
-            $vente=new vente();
-  
-            $vente->user()->associate(auth('api')->user());
 
          $i=   categorie::where('name', $req->input('categorie'))->get();
          $ss= sscategorie::where('name', $req->input('sscategorie'))->get();
@@ -86,14 +89,38 @@ if ($validator->fails()) {
           $vente->article()->associate($article);
           $vente->save();
            $trie->save();
-
+  
         return response()->json("bien fait");
         }else{
-          return response()->json(['error'=>$validator->errors()], 401);
+          return "error";
         }
     }
   }
-
+  function manam ($filename)
+  {
+      
+      $path = public_path('images/' . $filename);
+  
+  //    if (!File::exists($path)) {
+       //   abort(404);
+      //}
+  
+   //   $file = File::get($path);
+    //  $type = File::mimeType($path);
+  
+     // $response = Response($file, 200);
+      //  $response->header("Content-Type", $type);
+  
+     // return response($path);
+      $file = File::get($path);
+    //  Storage::disk('local')->get('marquee.json');
+      $response = Response($file, 200);
+      $response->header('Content-Type', 'image/jpeg');
+      return $response;
+  
+    //  return $path;
+  }
+  
     public function allarticle()
     {
       $article = Article::all();
@@ -140,11 +167,6 @@ if ($validator->fails()) {
         $achat->user()->associate(auth('api')->user());
        $article = Article::where('id',$flight)->first();
         $article->Disponible="non";
-     //   $article->save();
-
-    //    $achat->article()->associate($article);
-      //  $achat->commande()->associate($com);
-        //$achat->save();
        
        
        $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);

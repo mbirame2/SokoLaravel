@@ -11,7 +11,7 @@ class vente extends Model
  
   
     protected $fillable = [
-        'user', 'article'
+        'user', 'article','article_id','user_id'
     ];
 
     public function user(){

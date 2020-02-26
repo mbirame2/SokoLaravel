@@ -26,6 +26,9 @@ class CreateArticleTable extends Migration
             $table->text('Condition');
             $table->text('Disponible');
             $table->text('ImageName')->nullable();
+            $table->text('ImageName1')->nullable();
+            $table->text('ImageName2')->nullable();
+            $table->text('ImageName3')->nullable();
             $table->timestamps();
     });
     }

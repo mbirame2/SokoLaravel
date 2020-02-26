@@ -33,6 +33,7 @@ Route::get('allhomme',array('middleware' => 'cors', 'uses' =>'SokoController@all
 Route::get('allfemme',array('middleware' => 'cors', 'uses' =>'SokoController@allfemme'));
 Route::get('allcat',array('middleware' => 'cors', 'uses' =>'SokoController@allcat'));
 Route::get('allsscat',array('middleware' => 'cors', 'uses' =>'SokoController@allsscat'));
+Route::get('images/{filename}',array('middleware' => 'cors', 'uses' =>'SokoController@manam'));
 
 Route::get('allachat',array('middleware' => 'cors', 'uses' =>'SokoController@allachat'));
 Route::get('allnew',array('middleware' => 'cors', 'uses' => 'SokoController@allnew'));
