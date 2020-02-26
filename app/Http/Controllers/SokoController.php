@@ -52,20 +52,20 @@ if ($validator->fails()) {
 
 
 
-         $req->file('imagename')->move(public_path('images'),$req->file('imagename')->getClientOriginalName());
+         $req->file('imagename')->move(public_path('storage'),$req->file('imagename')->getClientOriginalName());
         $article->Imagename=$req->file('imagename')->getClientOriginalName();
 
 
         if($req->hasFile('imagename1') ){
-          $req->file('imagename1')->move(public_path('images'),$req->file('imagename1')->getClientOriginalName());
+          $req->file('imagename1')->move(public_path('storage'),$req->file('imagename1')->getClientOriginalName());
         $article->Imagename1=$req->file('imagename1')->getClientOriginalName();
         }
         if($req->hasFile('imagename2')){
-          $req->file('imagename2')->move(public_path('images'),$req->file('imagename2')->getClientOriginalName());
+          $req->file('imagename2')->move(public_path('storage'),$req->file('imagename2')->getClientOriginalName());
           $article->Imagename2=$req->file('imagename2')->getClientOriginalName();
         }
         if($req->hasFile('imagename3')){
-          $req->file('imagename3')->move(public_path('images'),$req->file('imagename3')->getClientOriginalName());
+          $req->file('imagename3')->move(public_path('storage'),$req->file('imagename3')->getClientOriginalName());
           $article->Imagename3=$req->file('imagename3')->getClientOriginalName();  
         }
       
@@ -99,7 +99,7 @@ if ($validator->fails()) {
   function manam ($filename)
   {
       
-      $path = public_path('images/' . $filename);
+      $path = public_path('storage/' . $filename);
   
   //    if (!File::exists($path)) {
        //   abort(404);
