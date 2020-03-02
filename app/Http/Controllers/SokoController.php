@@ -21,22 +21,22 @@ class SokoController extends Controller
     function liste(){
         return User::all();
     }
-    function ventearticle(Request $req){
+  public function ventearticle(Request $req){
       $validator = Validator::make($req->all(), [ 
         'taille' => 'required', 
         'titre' => 'required', 
         'prix' => 'required', 
+        'imagename'=> 'required',
         'description' => 'required', 
         'couleur' => 'required', 
-        'condition' => 'required', 
-        'confid' => 'required', 
     ]); 
+
 if ($validator->fails()) { 
 
         return response()->json(['error'=>$validator->errors()], 401);            
     }else{
      // var_dump($req->all());die();
-      if($req->hasFile('imagename')){
+  //    if($req->hasFile('imagename')){
      //  
         $article= new Article;
         $article->Taille=$req->input('taille');
@@ -91,10 +91,8 @@ if ($validator->fails()) {
            $trie->save();
   
         return response()->json("bien fait");
-        }else{
-          return "error";
         }
-    }
+    
   }
   function manam ($filename)
   {
