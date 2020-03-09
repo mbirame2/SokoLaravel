@@ -141,9 +141,9 @@ if ($validator->fails()) {
       $invoice = new CheckoutInvoice();
 
       \Paydunya\Setup::setMasterKey("pApwUxLn-U8Kh-doFk-mWbL-HlBbJKfV1VUC");
-      \Paydunya\Setup::setPublicKey("test_public_btfkB3P424IgQZrSraELQjci41k");
-      \Paydunya\Setup::setPrivateKey("test_private_FMgAMFjgGAnFfyrPCm5j70oliOM");
-      \Paydunya\Setup::setToken("CBFVDXcYTo7TMHUiDsiY");
+      \Paydunya\Setup::setPublicKey("live_public_ZCd8Pgz2hUqonLso2xyaZq9XuDd");
+      \Paydunya\Setup::setPrivateKey("live_private_M4aLh2KvunkpSEpHz7bbUOh4Gkp");
+      \Paydunya\Setup::setToken("eK1BofuJC0TIKRF2zdtE");
      // \Paydunya\Setup::setMode("test");
 
       \Paydunya\Checkout\Store::setName("SOKO Dakar"); // Seul le nom est requis
@@ -182,12 +182,13 @@ $invoice->addTax("Livraison", 1500);
          echo $invoice->response_text;
      }
 }
-public function pay(){
+public function pay(Request $req){
   $invoice = new CheckoutInvoice();
   if($_POST['data']['hash'] === hash('sha512', "VOTRE_CLE_PRINCIPALE")) {
 
     if ($_POST['data']['status'] == "completed") {
         //Faites vos traitements backoffice ici...
+        var_dump("yup");die();
     }
 
     } else {
