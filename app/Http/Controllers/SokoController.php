@@ -184,16 +184,11 @@ $invoice->addTax("Livraison", 1500);
 }
 public function pay(Request $req){
   $invoice = new CheckoutInvoice();
-  if($_POST['data']['hash'] === hash('sha512', "VOTRE_CLE_PRINCIPALE")) {
+  $invoice->setCallbackUrl("https://www.sokodakar.com/success");
 
-    if ($_POST['data']['status'] == "completed") {
-        //Faites vos traitements backoffice ici...
-        var_dump("yup");die();
-    }
-
-    } else {
-          die("Cette requête n'a pas été émise par PayDunya");
-    }
+ 
+        var_dump($invoice+$req);die();
+  
   }
 
 
