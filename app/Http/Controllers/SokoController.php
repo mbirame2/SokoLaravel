@@ -201,7 +201,7 @@ public function pay(Request $req){
 
     public function allnew()
     {
-      $article = triagearticles::with(['article', 'categorie','sscategorie'])->orderBy('created_at')->get();
+      $article = triagearticles::with(['article', 'categorie','sscategorie'])->latest()->get();
       return response($article, 200)
       ->header('Content-Type', 'application/json');
     }
