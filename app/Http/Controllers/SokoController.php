@@ -273,6 +273,26 @@ if($req->input('prenom')){
   ->header('Content-Type', 'application/json');
 }
 
+public function search(Request $req){
+  $name=$req->name;
+
+ $post= triagearticles::with(['article', 'categorie','sscategorie'])->whereHas('article', function ($query) use ($name) {
+   
+    $query->where('Titre', 'like', '%' .$name . '%' ); 
+  })->orwhereHas('categorie', function ($query) use ($name) {
+    $query->where('name', 'like', '%' .$name . '%' ); 
+  })->orwhereHas('sscategorie', function ($query) use ($name) {
+    $query->where('name',  'like', '%' .$name . '%' ); 
+  })->get();
+//  var_dump(count($post));die();
+  if(count($post)>0){
+    return response($post, 200)
+    ->header('Content-Type', 'application/json');
+  }else {
+    return response('erreur');
+  }
+ 
+}
 public function allfemme(){
   $article = triagearticles::with(['article', 'categorie','sscategorie'])->whereHas('article', function ($query) {
     $query->where('Genre', 'Femme');

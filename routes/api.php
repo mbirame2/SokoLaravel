@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Request;
 
 Route::post('login',array('middleware' => 'cors', 'uses' => 'API\UserController@login'));
 Route::post('register', array('middleware' => 'cors', 'uses' =>'API\UserController@register'));
+Route::post('search', array('middleware' => 'cors', 'uses' =>'SokoController@search'));
+
 Route::group(['middleware' => 'auth:api'], function(){ 
 Route::post('details', 'API\UserController@details');
 });
