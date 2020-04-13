@@ -182,17 +182,24 @@ $invoice->addTax("Livraison", 1500);
          echo $invoice->response_text;
      }
 }
-public function pay( $token){
+public function pay(){
  //A insérer dans le fichier du code source qui doit effectuer l'action
 
 // PayDunya rajoutera automatiquement le token de la facture sous forme de QUERYSTRING "token"
 // si vous avez configuré un "return_url" ou "cancel_url".
 // Récupérez donc le token en pur PHP via $_GET['token']
 //$token = $_GET['token'];
-
+$token = $_GET['token'];
+//
 $invoice = new CheckoutInvoice();
-if ($invoice->confirm($token)) {
+\Paydunya\Setup::setMasterKey("pApwUxLn-U8Kh-doFk-mWbL-HlBbJKfV1VUC");
+\Paydunya\Setup::setPublicKey("live_public_ZCd8Pgz2hUqonLso2xyaZq9XuDd");
+\Paydunya\Setup::setPrivateKey("live_private_M4aLh2KvunkpSEpHz7bbUOh4Gkp");
+\Paydunya\Setup::setToken("eK1BofuJC0TIKRF2zdtE");
+\Paydunya\Setup::setMode("live");
 
+if ($invoice->confirm($token)) {
+  var_dump($invoice);
 // Récupérer le statut du paiement
 // Le statut du paiement peut être soit completed, pending, cancelled
 return  response($invoice->getStatus(), 200)
