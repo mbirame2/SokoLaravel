@@ -182,12 +182,28 @@ $invoice->addTax("Livraison", 1500);
          echo $invoice->response_text;
      }
 }
-public function pay(Request $req){
-  $invoice = new CheckoutInvoice();
-  $invoice->setCallbackUrl("https://www.sokodakar.com/success");
+public function pay( $token){
+ //A insérer dans le fichier du code source qui doit effectuer l'action
 
- 
-        var_dump($invoice+$req);die();
+// PayDunya rajoutera automatiquement le token de la facture sous forme de QUERYSTRING "token"
+// si vous avez configuré un "return_url" ou "cancel_url".
+// Récupérez donc le token en pur PHP via $_GET['token']
+//$token = $_GET['token'];
+
+$invoice = new CheckoutInvoice();
+if ($invoice->confirm($token)) {
+
+// Récupérer le statut du paiement
+// Le statut du paiement peut être soit completed, pending, cancelled
+return  response($token, 200)
+->header('Content-Type', 'application/json');
+
+
+}else{
+echo $invoice->getStatus();
+echo $invoice->response_text;
+echo $invoice->response_code;
+}
   
   }
 
