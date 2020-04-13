@@ -148,11 +148,11 @@ if ($validator->fails()) {
 
       \Paydunya\Checkout\Store::setName("SOKO Dakar"); // Seul le nom est requis
       \Paydunya\Checkout\Store::setPhoneNumber("786087832");
-      \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com");
+      \Paydunya\Checkout\Store::setWebsiteUrl("https://www.sokodakar.com/");
 
       \Paydunya\Checkout\Store::setCallbackUrl("http://www.sokodakar.com/success");
-      \Paydunya\Checkout\Store::setCancelUrl("https://www.sokodakar.com/finaliser_commande");
-      \Paydunya\Checkout\Store::setReturnUrl("https://www.sokodakar.com/success");
+      $invoice->setReturnUrl("https://www.sokodakar.com/success");
+      $invoice->setCancelUrl("https://www.sokodakar.com/finaliser_commande");
 
       //$com=new commande();
      // $com->adresse=$req->input('adresse');
