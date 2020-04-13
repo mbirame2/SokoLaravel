@@ -144,7 +144,7 @@ if ($validator->fails()) {
       \Paydunya\Setup::setPublicKey("live_public_ZCd8Pgz2hUqonLso2xyaZq9XuDd");
       \Paydunya\Setup::setPrivateKey("live_private_M4aLh2KvunkpSEpHz7bbUOh4Gkp");
       \Paydunya\Setup::setToken("eK1BofuJC0TIKRF2zdtE");
-     // \Paydunya\Setup::setMode("test");
+      \Paydunya\Setup::setMode("live");
 
       \Paydunya\Checkout\Store::setName("SOKO Dakar"); // Seul le nom est requis
       \Paydunya\Checkout\Store::setPhoneNumber("786087832");
