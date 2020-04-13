@@ -171,7 +171,7 @@ if ($validator->fails()) {
       }
 $invoice->addTax("Livraison", 1500);
      $invoice->setTotalAmount($req->total+1500);
-     $invoice->addChannels([ 'jonijoni-senegal', 'orange-money-senegal']);
+   //  $invoice->addChannels([ 'jonijoni-senegal', 'orange-money-senegal']);
      if($invoice->create()) {
      //       console.log($invoice->response_text);
   
