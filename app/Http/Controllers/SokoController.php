@@ -195,7 +195,7 @@ if ($invoice->confirm($token)) {
 
 // Récupérer le statut du paiement
 // Le statut du paiement peut être soit completed, pending, cancelled
-return  response($invoice, 200)
+return  response($invoice->getStatus(), 200)
 ->header('Content-Type', 'application/json');
 
 
