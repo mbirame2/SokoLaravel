@@ -26,7 +26,7 @@ Route::post('details', 'API\UserController@details');
 Route::post('ventearticle',array('middleware' => 'cors', 'uses' =>'SokoController@ventearticle'));
 Route::post('commande',array('middleware' => 'cors', 'uses' =>'SokoController@commande'));
 Route::post('update',array('middleware' => 'cors', 'uses' =>'SokoController@update'));
-Route::get('pay/{token}',array('middleware' => 'cors', 'uses' =>'SokoController@pay'));
+Route::post('pay',array('middleware' => 'cors', 'uses' =>'SokoController@pay'));
 
 Route::get('onevente/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@onevente'));
 Route::get('remove/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@remove'));

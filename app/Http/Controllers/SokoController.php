@@ -161,19 +161,15 @@ if ($validator->fails()) {
     //$com->save();
       
       foreach ($req->product as $flight) {
-        $achat = new achat();
-        $achat->user()->associate(auth('api')->user());
+       
        $article = Article::where('id',$flight)->first();
-        $article->Disponible="non";
        
        
        $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);
       }
 $invoice->addTax("Livraison", 1500);
      $invoice->setTotalAmount($req->total+1500);
-   //  $invoice->addChannels([ 'jonijoni-senegal', 'orange-money-senegal']);
      if($invoice->create()) {
-     //       console.log($invoice->response_text);
   
    
          return response($invoice->getInvoiceUrl(), 200)
@@ -182,7 +178,8 @@ $invoice->addTax("Livraison", 1500);
          echo $invoice->response_text;
      }
 }
-public function pay($token){
+
+public function pay(Request $req){
  //A insérer dans le fichier du code source qui doit effectuer l'action
 
 // PayDunya rajoutera automatiquement le token de la facture sous forme de QUERYSTRING "token"
@@ -197,16 +194,39 @@ $invoice = new CheckoutInvoice();
 \Paydunya\Setup::setPrivateKey("live_private_M4aLh2KvunkpSEpHz7bbUOh4Gkp");
 \Paydunya\Setup::setToken("eK1BofuJC0TIKRF2zdtE");
 \Paydunya\Setup::setMode("live");
-if ($invoice->confirm($token)) {
+if ($invoice->confirm($req->token)) {
  
+  if($invoice->getStatus()=="completed"){
+    
+    $com=new commande();
+    $com->adresse=$req->input('adresse');
+    $com->mode_paiment="paydunya";
+     $com->statut_commande='en cours';
+   $com->save();
+    foreach ($req->product as $flight) {
+    
+     $article = Article::where('id',$flight)->first();
+      $article->Disponible="non";
+     $article->save();
+     $achat = new achat();
+     $achat->user()->associate(auth('api')->user());
+     $achat->article()->associate($article);
+     $achat->commande()->associate($com);
+        achat::create($achat);
+     $achat->save();
+    }
+   
+  
+   }
 // Récupérer le statut du paiement
 // Le statut du paiement peut être soit completed, pending, cancelled
-return  response($invoice, 200)
+return  response([$invoice,$com->id], 200)
 ->header('Content-Type', 'application/json');
 
 
 }else{
-  return  response("token expires", 200)
+
+  return  response([$invoice->getStatus(),$invoice->response_text,$invoice->response_code] , 200)
   ->header('Content-Type', 'application/json');
 }
   
