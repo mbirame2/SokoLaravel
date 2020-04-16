@@ -168,7 +168,7 @@ if ($validator->fails()) {
        $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);
       }
 $invoice->addTax("Livraison", 1500);
-     $invoice->setTotalAmount($req->total);
+     $invoice->setTotalAmount($req->total+1500);
      if($invoice->create()) {
   
    
