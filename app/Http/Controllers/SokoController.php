@@ -168,7 +168,7 @@ if ($validator->fails()) {
        $invoice->addItem($article->Titre, 1,$article->Prix , $article->Prix);
       }
 $invoice->addTax("Livraison", 1500);
-     $invoice->setTotalAmount($req->total+1500);
+     $invoice->setTotalAmount($req->total);
      if($invoice->create()) {
   
    
@@ -226,7 +226,7 @@ return  response([$invoice,$com->id], 200)
 
 }else{
 
-  return  response([$invoice->getStatus(),$invoice->response_text,$invoice->response_code] , 200)
+  return  response($invoice->getStatus() , 200)
   ->header('Content-Type', 'application/json');
 }
   
