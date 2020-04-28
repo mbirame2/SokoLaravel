@@ -14,7 +14,8 @@ use App\triagearticles;
 use File;
 use Facade\FlareClient\Http\Response;
 use Paydunya\Checkout\CheckoutInvoice;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Bridge\UserRepository;
 
 class SokoController extends Controller
 {
@@ -240,6 +241,19 @@ return  response([$invoice,$com->id], 200)
       ->header('Content-Type', 'application/json');
     }
 
+    public function allachatone()
+    {
+      $article = achat::with(['article', 'user','commande'])->get();
+      return response($article, 200)
+      ->header('Content-Type', 'application/json');
+    }
+    public function allventeone()
+    {
+      $article = vente::with(['article', 'user'])->get();
+      return response($article, 200)
+                  ->header('Content-Type', 'application/json');
+    }
+  
     public function allnew()
     {
       $article = triagearticles::with(['article', 'categorie','sscategorie'])->latest()->get();
