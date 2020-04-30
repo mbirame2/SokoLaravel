@@ -213,24 +213,21 @@ if ($invoice->confirm($req->token)) {
      $achat->user()->associate(auth('api')->user());
      $achat->article()->associate($article);
      $achat->commande()->associate($com);
-        achat::create($achat);
+      //  achat::create($achat);
      $achat->save();
+     
     }
    
-  
+    return  response()->json($com->id,200)->header('Content-Type', 'application/json');
    }
 // Récupérer le statut du paiement
 // Le statut du paiement peut être soit completed, pending, cancelled
-return  response([$invoice,$com->id], 200)
+return response()->json("erreur", 200)
 ->header('Content-Type', 'application/json');
 
 
-}else{
-
-  return  response($invoice->getStatus() , 200)
-  ->header('Content-Type', 'application/json');
 }
-  
+return  response()->json("erreur",200)->header('Content-Type', 'application/json');;
   }
 
 
