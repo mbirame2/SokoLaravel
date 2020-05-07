@@ -270,6 +270,7 @@ return  response()->json("erreur",200)->header('Content-Type', 'application/json
        Article::where('id',$id)->delete();
       return response("Supprimer avec succés", 200)  ;
     }
+
     public function allvente()
     {
       $article = vente::with(['article', 'user'])->where('user_id', auth('api')->user()->id)->get();

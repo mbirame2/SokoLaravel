@@ -62,5 +62,30 @@ public $successStatus = 200;
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this->successStatus); 
     } 
+    function liste(){
+        return User::where('role', "admin");
+    }
+  /** 
+     * login api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+ public function updateadmin(Request $req){
+   
+    $user =User::find($req->input('id'));  
+        if($req->input('prenom')){
+            $user->prenom = $req->input('prenom');}
+            if($req->input('nom')){
+            $user->nom = $req->input('nom');}
+            if($req->input('telephone')){
+            $user->telephone = $req->input('telephone');
+            }
+            if($req->input('adresse')){
+              $user->adresse = $req->input('adresse');
+              }
+              $user->save();
+              return response("succés", 200)
+              ->header('Content-Type', 'application/json');
+    }
 }
  
