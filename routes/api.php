@@ -29,11 +29,14 @@ Route::post('ventearticle',array('middleware' => 'cors', 'uses' =>'SokoControlle
 Route::post('commande',array('middleware' => 'cors', 'uses' =>'SokoController@commande'));
 Route::post('update',array('middleware' => 'cors', 'uses' =>'SokoController@update'));
 Route::post('pay',array('middleware' => 'cors', 'uses' =>'SokoController@pay'));
+Route::post('adminregister',array('middleware' => 'cors', 'uses' =>'API\UserController@adminregister'));
 
 Route::get('onevente/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@onevente'));
 Route::get('remove/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@remove'));
 
 Route::get('allhomme',array('middleware' => 'cors', 'uses' =>'SokoController@allhomme'));
+Route::get('adminliste',array('middleware' => 'cors', 'uses' =>'API\UserController@liste'));
+
 Route::get('allfemme',array('middleware' => 'cors', 'uses' =>'SokoController@allfemme'));
 Route::get('allcat',array('middleware' => 'cors', 'uses' =>'SokoController@allcat'));
 Route::get('allsscat',array('middleware' => 'cors', 'uses' =>'SokoController@allsscat'));
