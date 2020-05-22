@@ -149,7 +149,7 @@ public $successStatus = 200;
             $query->where('id', $id ); 
           })->update(["user_id" => null]);
 
-         // var_dump( $vente);die();
+  
            $achat=achat::with([ "user","article" ])->whereHas("user", function ($query) use ($id) {
             $query->where('id', $id ); 
           })->update(["user_id" => null]);
@@ -158,7 +158,7 @@ public $successStatus = 200;
           }
 
           public function onearticle($id){
-            $article = achat::with(['user'])->where('id',$id)->first();
+            $article = achat::with(["user","article","commande"])->where('id',$id)->first();
             return response($article, 200)  ;
                       }
 

@@ -265,7 +265,7 @@ return  response()->json("erreur",200)->header('Content-Type', 'application/json
 
     public function remove($id){
       triagearticles::where('article_id',$id)->delete();  
-     
+      achat::where('article_id',$id)->delete();
        vente::where('article_id',$id)->delete();
        Article::where('id',$id)->delete();
       return response("Supprimer avec succés", 200)  ;
