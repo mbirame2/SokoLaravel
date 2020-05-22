@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use App\achat;
 use App\Article;
+use App\commande;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller;
 use App\Role;
-use App\User; 
+use App\User;
+use App\vente;
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 class UserController extends Controller {
@@ -20,7 +23,7 @@ public $successStatus = 200;
         if(Auth::attempt(['telephone' => request('telephone'), 'password' => request('password')])){ 
             $user = Auth::user(); 
             $token =  $user->createToken('MyApp')->accessToken; 
-            return response()->json( $token); 
+            return response()->json( [$token,$user]); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
@@ -141,5 +144,37 @@ public $successStatus = 200;
                   return response("succés", 200)
                   ->header('Content-Type', 'application/json');
         }
+        public function remove($id){
+           $vente= vente::with([ "user","article" ])->whereHas("user", function ($query) use ($id) {
+            $query->where('id', $id ); 
+          })->update(["user_id" => null]);
+
+         // var_dump( $vente);die();
+           $achat=achat::with([ "user","article" ])->whereHas("user", function ($query) use ($id) {
+            $query->where('id', $id ); 
+          })->update(["user_id" => null]);
+           User::where('id',$id)->delete();  
+            return response("Supprimer avec succés", 200)  ;
+          }
+
+          public function onearticle($id){
+            $article = achat::with(['user'])->where('id',$id)->first();
+            return response($article, 200)  ;
+                      }
+
+        public function updatecommande(Request $req){
+   
+            $article =commande::find($req->input('id'));
+           
+                if($req->input('status')){
+                    $article->statut_commande=$req->input('status');
+                
+                }
+                   
+                      $article->save();
+                      return response("error", 200)
+                      ->header('Content-Type', 'application/json');
+            }
+          
 }
  

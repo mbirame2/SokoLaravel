@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Request;
 Route::post('login',array('middleware' => 'cors', 'uses' => 'API\UserController@login'));
 Route::post('register', array('middleware' => 'cors', 'uses' =>'API\UserController@register'));
 Route::post('updateadmin', array('middleware' => 'cors', 'uses' =>'API\UserController@updateadmin'));
+Route::post('updatecommande', array('middleware' => 'cors', 'uses' =>'API\UserController@updatecommande'));
+Route::post('updatearticle', array('middleware' => 'cors', 'uses' =>'API\UserController@updatearticle'));
 
 Route::post('search', array('middleware' => 'cors', 'uses' =>'SokoController@search'));
 
@@ -32,7 +34,10 @@ Route::post('pay',array('middleware' => 'cors', 'uses' =>'SokoController@pay'));
 Route::post('adminregister',array('middleware' => 'cors', 'uses' =>'API\UserController@adminregister'));
 
 Route::get('onevente/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@onevente'));
+Route::get('onearticle/{id}',array('middleware' => 'cors', 'uses' =>'API\UserController@onearticle'));
+
 Route::get('remove/{id}',array('middleware' => 'cors', 'uses' =>'SokoController@remove'));
+Route::get('removeuser/{id}',array('middleware' => 'cors', 'uses' =>'API\UserController@remove'));
 
 Route::get('allhomme',array('middleware' => 'cors', 'uses' =>'SokoController@allhomme'));
 Route::get('adminliste',array('middleware' => 'cors', 'uses' =>'API\UserController@liste'));
