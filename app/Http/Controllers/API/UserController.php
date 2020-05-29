@@ -158,7 +158,7 @@ public $successStatus = 200;
           }
 
           public function onearticle($id){
-            $article = achat::with(["user","article","commande"])->where('id',$id)->first();
+            $article = article::where('id',$id)->first();
             return response($article, 200)  ;
                       }
 
